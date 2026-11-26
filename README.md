@@ -1,0 +1,38 @@
+# Catálogo Solidário — Front-end (React + TypeScript)
+
+Interface web do projeto de extensão (POO III). Consome a API NestJS (`poo3-p2`).
+
+## Rodando
+
+```bash
+npm install
+cp .env.example .env      # VITE_API_URL aponta para a API (padrão http://localhost:3333)
+npm run dev               # http://localhost:3000
+npm run build             # checagem de tipos + build de produção (pasta dist/)
+```
+
+A API precisa estar rodando e com `FRONTEND_URL=http://localhost:3000` no `.env` dela (CORS).
+
+## Estrutura
+
+- `src/api/` — cliente HTTP tipado (`api<T>()`, token JWT, `ApiError`) e tipos da API
+- `src/context/` — `AuthProvider` (`useAuth`) e `CartProvider` (`useCarrinho`, salvo no localStorage)
+- `src/hooks/` — hooks próprios: `useFetch` (busca com cancelamento), `useDebounce`, `useFormulario` (valores + validação Zod + erro por campo)
+- `src/components/` — `Layout`, `CartaoProduto`, `Paginacao`, `Campo`, `Consentimento` (aviso LGPD), `RotaProtegida`
+- `src/pages/` — parte pública (catálogo, detalhe, carrinho/pedido, contato, login) e `admin/` (pedidos, produtos, mensagens, relatórios)
+
+## Telas
+
+| Rota | Acesso |
+|---|---|
+| `/` catálogo (busca, categoria, paginação na URL) · `/produtos/:id` · `/carrinho` · `/contato` | público |
+| `/login` | público |
+| `/admin` (pedidos), `/admin/produtos`, `/admin/mensagens` | logado (admin ou operador) |
+| `/admin/relatorios` | só ADMIN |
+
+Layout responsivo (celular e computador), com suporte a modo escuro.
+
+## Publicação
+
+Na Vercel/Netlify defina `VITE_API_URL` (endereço público da API) e `VITE_NOME_ORG` (nome da organização parceira).
+Como o app usa React Router, configure o *fallback* para `index.html` (na Vercel: rewrite de `/(.*)` para `/`).
