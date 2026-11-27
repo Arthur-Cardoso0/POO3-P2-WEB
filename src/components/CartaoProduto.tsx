@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 import type { Produto } from '../api/types';
 import { useCarrinho } from '../context/CartContext';
-import { formatarMoeda } from '../utils';
+import { emojiDoProduto, formatarMoeda } from '../utils';
 
 export function ImagemProduto({ produto }: { produto: Pick<Produto, 'nome' | 'imagemUrl'> }) {
   return produto.imagemUrl ? (
     <img src={produto.imagemUrl} alt={produto.nome} loading="lazy" />
   ) : (
-    <div className="sem-imagem" role="img" aria-label={`Sem foto de ${produto.nome}`}>🧺</div>
+    <div className="sem-imagem" role="img" aria-label={`Sem foto de ${produto.nome}`}>{emojiDoProduto(produto.nome)}</div>
   );
 }
 

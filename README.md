@@ -32,6 +32,15 @@ A API precisa estar rodando e com `FRONTEND_URL=http://localhost:3000` no `.env`
 
 Layout responsivo (celular e computador), com suporte a modo escuro.
 
+## Fotos dos produtos
+
+Sem foto, o site mostra um ícone (emoji) escolhido pelo nome do produto. Para usar fotos reais do feirante:
+
+1. Coloque os arquivos em `public/produtos/` (ex.: `alface.jpg`), de preferência reduzidos (até ~800 px de largura).
+2. No painel, em **Produtos → Editar**, informe o caminho `/produtos/alface.jpg` no campo de imagem.
+
+Só publique fotos que o feirante tiver feito ou autorizado.
+
 ## Publicação
 
 Na Vercel/Netlify defina `VITE_API_URL` (endereço público da API) e `VITE_NOME_ORG` (nome da organização parceira).

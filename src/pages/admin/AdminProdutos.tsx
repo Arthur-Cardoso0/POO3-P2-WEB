@@ -72,7 +72,7 @@ function FormProduto({
           </select>
         )}
       </Campo>
-      <Campo id="p-img" rotulo="Endereço da imagem (opcional)" dica="Cole o link de uma foto já publicada na internet." erro={form.erros.imagemUrl}>
+      <Campo id="p-img" rotulo="Endereço da imagem (opcional)" dica="Link da foto (https://...) ou caminho do site, como /produtos/alface.jpg. Sem foto, o site mostra um ícone." erro={form.erros.imagemUrl}>
         {(p) => <input {...p} value={form.valores.imagemUrl} onChange={(e) => form.definir('imagemUrl', e.target.value)} />}
       </Campo>
       {form.erroGeral && <p className="alerta alerta-erro" role="alert">{form.erroGeral}</p>}
