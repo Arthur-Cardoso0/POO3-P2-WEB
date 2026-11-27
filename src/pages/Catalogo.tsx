@@ -7,6 +7,7 @@ import Estado from '../components/Estado';
 import Paginacao from '../components/Paginacao';
 import { useDebounce } from '../hooks/useDebounce';
 import { useFetch } from '../hooks/useFetch';
+import { INFO_FEIRA } from '../config';
 
 const POR_PAGINA = 8;
 
@@ -50,6 +51,7 @@ export default function Catalogo() {
   return (
     <>
       <h1>Catálogo</h1>
+      <p className="aviso-feira">🌾 {INFO_FEIRA}</p>
 
       <div className="filtros">
         <input

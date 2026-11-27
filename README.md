@@ -1,6 +1,6 @@
-# Catálogo Solidário — Front-end (React + TypeScript)
+# Raízes do Cerrado — Front-end (React + TypeScript)
 
-Interface web do projeto de extensão (POO III). Consome a API NestJS (`poo3-p2`).
+Interface web do projeto de extensão (POO III) para o feirante **Raízes do Cerrado** (produtos naturais de fazenda, feira às quartas e sábados). O cliente escolhe o dia de retirada ao pedir, e o painel mostra "o que levar para a feira" em cada dia. Consome a API NestJS (`POO3-P2-API`).
 
 ## Rodando
 
