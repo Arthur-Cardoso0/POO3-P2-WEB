@@ -6,3 +6,5 @@ export const formatarData = (iso: string) =>
 
 /** Aceita "12,50" ou "12.50". Retorna NaN se inválido. */
 export const paraNumero = (texto: string) => Number(texto.replace(',', '.'));
+
+export const ROTULO_DIA = { QUARTA: 'Quarta-feira', SABADO: 'Sábado' } as const;

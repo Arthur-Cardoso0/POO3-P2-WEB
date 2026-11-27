@@ -1,4 +1,5 @@
 export type Perfil = 'ADMIN' | 'OPERADOR';
+export type DiaFeira = 'QUARTA' | 'SABADO';
 export type StatusPedido = 'PENDENTE' | 'CONFIRMADO' | 'ENTREGUE' | 'CANCELADO';
 
 export interface Usuario {
@@ -47,6 +48,7 @@ export interface Pedido {
   clienteContato: string;
   observacao: string | null;
   status: StatusPedido;
+  retirada: DiaFeira;
   total: number;
   criadoEm: string;
   itens: ItemPedido[];
@@ -79,4 +81,11 @@ export interface ProdutoEstoqueBaixo {
   id: number;
   nome: string;
   estoque: number;
+}
+
+export interface ItemSeparacao {
+  produtoId: number;
+  produto: string;
+  quantidade: number;
+  pedidos: number;
 }

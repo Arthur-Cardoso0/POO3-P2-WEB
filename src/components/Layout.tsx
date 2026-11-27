@@ -1,5 +1,5 @@
 import { Link, NavLink, Outlet } from 'react-router-dom';
-import { NOME_ORG } from '../config';
+import { INFO_FEIRA, NOME_ORG } from '../config';
 import { useAuth } from '../context/AuthContext';
 import { useCarrinho } from '../context/CartContext';
 
@@ -27,7 +27,8 @@ export default function Layout() {
       </main>
       <footer className="rodape">
         <div className="container">
-          <p>{NOME_ORG} — projeto de extensão universitária (UNIFAN · POO III).</p>
+          <p>{NOME_ORG} — produtos naturais direto da fazenda. {INFO_FEIRA}</p>
+          <p>Site desenvolvido como projeto de extensão universitária (UNIFAN · POO III).</p>
           <p>Coletamos apenas os dados necessários para atender seu pedido ou mensagem (LGPD).</p>
         </div>
       </footer>

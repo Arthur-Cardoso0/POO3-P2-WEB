@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { api, mensagemDeErro } from '../../api/client';
-import type { Paginado, Pedido, StatusPedido } from '../../api/types';
+import type { DiaFeira, Paginado, Pedido, StatusPedido } from '../../api/types';
 import Estado from '../../components/Estado';
 import Paginacao from '../../components/Paginacao';
 import { useFetch } from '../../hooks/useFetch';
-import { formatarData, formatarMoeda } from '../../utils';
+import { formatarData, formatarMoeda, ROTULO_DIA } from '../../utils';
 
 // Espelha o fluxo de status da API (a API continua sendo quem decide).
 const PROXIMOS: Record<StatusPedido, StatusPedido[]> = {
@@ -24,6 +24,7 @@ const STATUS: StatusPedido[] = ['PENDENTE', 'CONFIRMADO', 'ENTREGUE', 'CANCELADO
 export default function AdminPedidos() {
   const [pagina, setPagina] = useState(1);
   const [status, setStatus] = useState<StatusPedido | ''>('');
+  const [retirada, setRetirada] = useState<DiaFeira | ''>('');
   const [aberto, setAberto] = useState<number | null>(null);
   const [erroAcao, setErroAcao] = useState<string | null>(null);
 
@@ -31,9 +32,10 @@ export default function AdminPedidos() {
     (s) => {
       const qs = new URLSearchParams({ pagina: String(pagina), limite: '10' });
       if (status) qs.set('status', status);
+      if (retirada) qs.set('retirada', retirada);
       return api<Paginado<Pedido>>(`/pedidos?${qs}`, { auth: true, signal: s });
     },
-    [pagina, status],
+    [pagina, status, retirada],
   );
 
   async function mudarStatus(pedido: Pedido, novo: StatusPedido) {
@@ -55,6 +57,12 @@ export default function AdminPedidos() {
           <option value="">Todos</option>
           {STATUS.map((s) => <option key={s} value={s}>{s}</option>)}
         </select>
+        <label htmlFor="f-retirada">Dia de retirada</label>
+        <select id="f-retirada" value={retirada} onChange={(e) => { setRetirada(e.target.value as DiaFeira | ''); setPagina(1); }}>
+          <option value="">Todos</option>
+          <option value="QUARTA">Quarta-feira</option>
+          <option value="SABADO">Sábado</option>
+        </select>
       </div>
       {erroAcao && <p className="alerta alerta-erro" role="alert">{erroAcao}</p>}
       <Estado carregando={carregando && !dados} erro={erro} onTentarNovamente={recarregar}>
@@ -68,6 +76,7 @@ export default function AdminPedidos() {
               </div>
               <p>{p.clienteNome} · {p.clienteContato}</p>
               <p className="dica">{formatarData(p.criadoEm)} · <strong>{formatarMoeda(p.total)}</strong></p>
+              <p>Retirada: <strong>{ROTULO_DIA[p.retirada]}</strong></p>
               {p.observacao && <p className="dica">Obs.: {p.observacao}</p>}
               <button className="btn btn-link" onClick={() => setAberto(aberto === p.id ? null : p.id)}>
                 {aberto === p.id ? 'Ocultar itens' : `Ver itens (${p.itens.length})`}

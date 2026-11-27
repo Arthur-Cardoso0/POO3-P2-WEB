@@ -1,22 +1,53 @@
 import { useState } from 'react';
 import { api } from '../../api/client';
-import type { PedidosPorStatus, ProdutoEstoqueBaixo, VendaPorProduto } from '../../api/types';
+import type { DiaFeira, ItemSeparacao, PedidosPorStatus, ProdutoEstoqueBaixo, VendaPorProduto } from '../../api/types';
 import Estado from '../../components/Estado';
 import { useFetch } from '../../hooks/useFetch';
 import { formatarMoeda } from '../../utils';
 
 export default function AdminRelatorios() {
   const [limite, setLimite] = useState(5);
+  const [dia, setDia] = useState<DiaFeira>('SABADO');
   const vendas = useFetch((s) => api<VendaPorProduto[]>('/relatorios/vendas-por-produto', { auth: true, signal: s }), []);
   const status = useFetch((s) => api<PedidosPorStatus[]>('/relatorios/pedidos-por-status', { auth: true, signal: s }), []);
   const estoque = useFetch(
     (s) => api<ProdutoEstoqueBaixo[]>(`/relatorios/estoque-baixo?limite=${limite}`, { auth: true, signal: s }),
     [limite],
   );
+  const separacao = useFetch(
+    (s) => api<ItemSeparacao[]>(`/relatorios/separacao?dia=${dia}`, { auth: true, signal: s }),
+    [dia],
+  );
   const maior = Math.max(1, ...(vendas.dados ?? []).map((v) => v.faturamento));
 
   return (
     <>
+      <section>
+        <h2>O que levar para a feira</h2>
+        <p className="dica">Soma dos pedidos pendentes e confirmados para o dia escolhido.</p>
+        <div className="linha">
+          <label htmlFor="dia">Dia da feira</label>
+          <select id="dia" value={dia} onChange={(e) => setDia(e.target.value as DiaFeira)}>
+            <option value="QUARTA">Quarta-feira</option>
+            <option value="SABADO">Sábado</option>
+          </select>
+        </div>
+        <Estado carregando={separacao.carregando && !separacao.dados} erro={separacao.erro} onTentarNovamente={separacao.recarregar}>
+          {separacao.dados?.length === 0 ? <p className="vazio">Nenhum pedido em aberto para este dia.</p> : (
+            <div className="tabela-rolavel">
+              <table>
+                <thead><tr><th>Produto</th><th>Quantidade</th><th>Pedidos</th></tr></thead>
+                <tbody>
+                  {separacao.dados?.map((i) => (
+                    <tr key={i.produtoId}><td>{i.produto}</td><td><strong>{i.quantidade}</strong></td><td>{i.pedidos}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </Estado>
+      </section>
+
       <section>
         <h2>Vendas por produto</h2>
         <p className="dica">Considera pedidos não cancelados.</p>

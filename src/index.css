@@ -196,3 +196,4 @@ td.acoes { white-space: nowrap; }
   .btn-perigo { color: #fff; }
   .btn-secundario, .btn-link { color: var(--texto); }
 }
+.aviso-feira { background: var(--verde-claro); border-radius: var(--raio); padding: 0.6rem 0.9rem; margin: 0 0 1rem; }
