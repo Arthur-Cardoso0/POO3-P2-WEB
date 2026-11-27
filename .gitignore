@@ -1,3 +1,5 @@
 node_modules
 dist
 .env
+# Patches gerados para aplicar mudanças (não versionar)
+*.patch
